@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afiche AR</title>
+    <!-- Libreria Aframe -->
+     <script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
+     <!-- Libreria MindAr -->
+     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <!-- Escena de Aframe -->
+     <a-scene mindar-image="imageTargetSrc: ./RECURSOS/targets.mind; filterMinCF: 0.0001; filterBeta: 0.001;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        <a-assets>
+            <!-- Aqui van los recursos -->
+             <!-- Carga de Imagen -->
+             <img src="./RECURSOS/we-bare-bears.png" id="osos">
+             <!-- Carga de Modelo 3D -->
+             <a-assets-item id="modelo3d" src="./RECURSOS/bear.glb"></a-assets-item>
+            <!-- Carga de Video -->
+             <video
+             id="mivideo"
+             src="./RECURSOS/720video.mp4"
+             preload="auto"
+             loop="true"
+             muted="true"
+             crossorigin="anonymous"
+             playsinline
+             webkit-playsinline
+             ></video>
+        </a-assets>
+            <!-- Camara de la escena -->
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <a-entity mindar-image-target="targetIndex: 0">
+            <!-- Aqui se colocan los elementos que salen en AR -->
+             <!-- Plano -->
+             <a-plane src="#osos" position="0 0 0" width="1" height="0.5" rotation="0 0 0"></a-plane>
+             <!-- Modelo 3D -->
+             <a-gltf-model rotation="0 0 0" position="0 0 0.1" scale="1 1 1" src="#modelo3d"></a-gltf-model>
+             <!-- Texto -->
+             <a-text
+             value="Polar"
+             color="#000000"
+             align="center"
+             width="2"
+             position="0 -0.1 0.1"
+             ></a-text>
+             <!-- Video -->
+              <a-video
+              src="#mivideo" 
+              position="0 0 0.2" 
+              width="1.6" 
+              height="0.9"
+              ></a-video>
+        </a-entity>
+    </a-scene
+    <!-- Para que el video se reproduzca cuando se detecte el target, se agrega un evento de escucha al elemento con el atributo 'mindar-image-target'. Cuando se encuentra el target, se selecciona el video y se llama al método play() para iniciar la reproducción del video. -->
+    <script>
+    document.querySelector('[mindar-image-target]').addEventListener('targetFound', () => {
+        const video = document.querySelector('#mivideo');
+        video.play();
+    })
+    </script>
+</body>
+</html>
